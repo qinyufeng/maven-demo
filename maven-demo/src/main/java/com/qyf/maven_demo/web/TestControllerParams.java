@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.qyf.maven_demo.model.RequestMaterialStock;
 import com.qyf.maven_demo.model.RequestParams;
 import com.qyf.maven_demo.model.RespModel;
+import com.qyf.maven_demo.service.TestService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,7 +29,8 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("test")
 public class TestControllerParams {
-	
+	@Autowired
+	private TestService testService;
 	/**
 	 * @author qyf
 	 * @param data
