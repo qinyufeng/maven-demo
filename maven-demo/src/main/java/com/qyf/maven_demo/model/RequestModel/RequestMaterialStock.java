@@ -1,4 +1,4 @@
-package com.qyf.maven_demo.model;
+package com.qyf.maven_demo.model.RequestModel;
 
 import java.io.Serializable;
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qyf.maven_demo.mapper.PositionStcokMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.qyf.maven_demo.entity.PositionStcok">
+		<id column="ID" property="id" />
+		<result column="matCode" property="matCode" />
+		<result column="posCode" property="posCode" />
+		<result column="stockDate" property="stockDate" />
+		<result column="stock" property="stock" />
+		<result column="createDate" property="createDate" />
+		<result column="creator" property="creator" />
+		<result column="createId" property="createId" />
+		<result column="modifyDate" property="modifyDate" />
+		<result column="modifiId" property="modifiId" />
+		<result column="modifier" property="modifier" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, matCode AS matCode, posCode AS posCode, stockDate AS stockDate, stock, createDate AS createDate, creator, createId AS createId, modifyDate AS modifyDate, modifiId AS modifiId, modifier
+    </sql>
+
+</mapper>

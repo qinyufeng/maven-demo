@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
-import com.qyf.maven_demo.model.RequestMaterialStock;
-import com.qyf.maven_demo.model.RequestParams;
-import com.qyf.maven_demo.model.RespModel;
+import com.qyf.maven_demo.model.RequestModel.RequestMaterialStock;
+import com.qyf.maven_demo.model.RequestModel.RequestParams;
+import com.qyf.maven_demo.model.ResponseModel.RespModel;
 import com.qyf.maven_demo.service.TestService;
 
 import io.swagger.annotations.ApiOperation;
