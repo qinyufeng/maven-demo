@@ -18,7 +18,7 @@ public class TestControllerDelete {
 	@Autowired
 	private TestServiceDelete serviceDelete;
 	@DeleteMapping
-	@ApiOperation(value = "删除不合格单明细记录")
+	@ApiOperation(value = "test")
 	public Object del(@RequestParam(required=true) String id) {
 		serviceDelete.deleteById(id);
 		return "删除成功";
