@@ -1,10 +1,14 @@
 package com.qyf.maven_demo.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -95,15 +99,33 @@ public class StudentController {
 	/**
 	 * Java参数校验工具 @valid 效验 
 	 */
-	@PostMapping("/insertValidate")
-	private StudentValidate insertValidate(@RequestBody @Valid StudentValidate param) {
+	@PostMapping("/valid")
+	private StudentValidate valid(@RequestBody @Valid StudentValidate param) {
 		return param;
 	}
 	/**
 	 * 自定义注解校验
 	 */
 	@PostMapping("/customerValid")
-	private StudentValidate test(@RequestBody @Valid StudentValidate param) {
+	private StudentValidate customerValid(@RequestBody @Valid StudentValidate param) {
+		return param;
+	}
+	/**
+	 * 手动校验参数
+	 * @throws Exception
+	 */
+	@PostMapping("/selfValid")
+	private StudentValidate selfValid(@RequestBody StudentValidate param) throws Exception{
+		StringBuffer msg=new StringBuffer();
+		if(ObjectUtils.isEmpty(param.getName())) {
+			msg.append("参数姓名不能为空,");
+		}
+		if(ObjectUtils.isEmpty(param.getCreator())) {
+			msg.append("参数创建人不能为空,");
+		}
+		if(msg.length()>0) {
+			throw new Exception(msg.substring(0, msg.length()-1));
+		}
 		return param;
 	}
 	
