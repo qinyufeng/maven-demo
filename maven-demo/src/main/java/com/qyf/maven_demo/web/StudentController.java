@@ -2,8 +2,9 @@ package com.qyf.maven_demo.web;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,10 +93,17 @@ public class StudentController {
 	/************************ 参数校验 *************************************/
 	
 	/**
-	 * Java参数校验工具 @validated 效验 
+	 * Java参数校验工具 @valid 效验 
 	 */
 	@PostMapping("/insertValidate")
-	private StudentValidate insertValidate(@RequestBody @Validated StudentValidate param) {
+	private StudentValidate insertValidate(@RequestBody @Valid StudentValidate param) {
+		return param;
+	}
+	/**
+	 * 自定义注解校验
+	 */
+	@PostMapping("/customerValid")
+	private StudentValidate test(@RequestBody @Valid StudentValidate param) {
 		return param;
 	}
 	

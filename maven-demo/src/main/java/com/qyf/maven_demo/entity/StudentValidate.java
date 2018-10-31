@@ -6,6 +6,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.qyf.maven_demo.utils.validator.CustomerValidator;
+
 /**
  * @author qyf
  * @since 2018-10-31
@@ -21,12 +23,13 @@ public class StudentValidate implements Serializable {
     
     @NotEmpty(message="phone不能为空")
 	private String phone;
-    
+
 	@NotEmpty(message="creator不能为空")
 	private String creator;
 	
 	@NotNull(message = "年龄不能为空！")
 	@Max(value = 100, message = "年龄不能大于100岁！")
+	@CustomerValidator(message="年龄不可为奇数")//这个为自定义的注解验证
 	private Integer age;
 	
 	public Integer getAge() {
