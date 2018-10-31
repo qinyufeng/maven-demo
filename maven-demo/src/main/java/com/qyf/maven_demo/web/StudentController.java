@@ -3,6 +3,7 @@ package com.qyf.maven_demo.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.qyf.maven_demo.entity.StudentValidate;
 import com.qyf.maven_demo.model.Student;
 import com.qyf.maven_demo.service.StudentService;
 
@@ -49,7 +51,7 @@ public class StudentController {
 	private boolean delete(int id) {
 		return service.deleteById(id);
 	}
-	/************************ 批量增删改查 ****************************/
+	/************************ 批量增删改查 *************************************/
 	/**
 	 * 批量插入
 	 */
@@ -85,4 +87,16 @@ public class StudentController {
 		List<Student> stuList=service.selectList(wrapper);
 		return stuList;
 	}
+	
+	
+	/************************ 参数校验 *************************************/
+	
+	/**
+	 * Java参数校验工具 @validated 效验 
+	 */
+	@PostMapping("/insertValidate")
+	private StudentValidate insertValidate(@RequestBody @Validated StudentValidate param) {
+		return param;
+	}
+	
 }

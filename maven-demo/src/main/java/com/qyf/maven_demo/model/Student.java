@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -33,7 +34,56 @@ public class Student implements Serializable {
 	private Double weight;
 	private String father;
 	private String mother;
+    /**
+     * 创建日期
+     */
+	@TableField("createDate")
+	private Date createDate;
+    /**
+     * 创建者
+     */
+	private String creator;
+    /**
+     * 修改时间
+     */
+	@TableField("modifyDate")
+	private Date modifyDate;
+    /**
+     * 修改者
+     */
+	private String modifier;
 
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	public Date getModifyDate() {
+		return modifyDate;
+	}
+
+	public void setModifyDate(Date modifyDate) {
+		this.modifyDate = modifyDate;
+	}
+
+	public String getModifier() {
+		return modifier;
+	}
+
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
+	}
 
 	public Integer getId() {
 		return id;
