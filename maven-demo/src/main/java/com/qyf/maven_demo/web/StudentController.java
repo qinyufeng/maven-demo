@@ -1,10 +1,6 @@
 package com.qyf.maven_demo.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,5 +124,9 @@ public class StudentController {
 		}
 		return param;
 	}
-	
+	/************************ java8新特性的运用demo *************************************/
+	@PostMapping("/javaEight")
+	private List<Student> javaEight(@RequestBody StudentValidate param){
+		return null;
+	}
 }
