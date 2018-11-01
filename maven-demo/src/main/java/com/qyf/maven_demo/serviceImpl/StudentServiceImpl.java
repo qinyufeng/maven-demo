@@ -67,6 +67,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 		int ageTotal=stuList.stream().mapToInt(Student::getAge).sum();
 		
 		System.out.println(listToMap1); System.out.println(listToMap2); System.out.println(listToMap3); System.out.println(commonClass);System.out.println(moneyTotal);System.out.println(ageTotal);
+		/**
+		 * list 排序
+		 */
+		
 		return null;
 	}
 }
