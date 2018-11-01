@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -34,6 +35,7 @@ public class Student implements Serializable {
 	private Double weight;
 	private String father;
 	private String mother;
+	private BigDecimal money;
     /**
      * 创建日期
      */
@@ -202,6 +204,14 @@ public class Student implements Serializable {
 		return this;
 	}
 
+	public BigDecimal getMoney() {
+		return money;
+	}
+
+	public void setMoney(BigDecimal money) {
+		this.money = money;
+	}
+
 	@Override
 	public String toString() {
 		return "Student{" +
@@ -218,6 +228,7 @@ public class Student implements Serializable {
 			", weight=" + weight +
 			", father=" + father +
 			", mother=" + mother +
+			", money=" + money +
 			"}";
 	}
 }

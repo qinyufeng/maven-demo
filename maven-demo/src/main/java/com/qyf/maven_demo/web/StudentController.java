@@ -1,6 +1,7 @@
 package com.qyf.maven_demo.web;
 
 import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,8 +126,12 @@ public class StudentController {
 		return param;
 	}
 	/************************ java8新特性的运用demo *************************************/
+	/**
+	 * @author qyf
+     * @since 2018-11-01
+	 */
 	@PostMapping("/javaEight")
-	private List<Student> javaEight(@RequestBody StudentValidate param){
-		return null;
+	private Object javaEight(@RequestBody Student param){
+		return service.javaEight(param);
 	}
 }
