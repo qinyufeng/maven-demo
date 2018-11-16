@@ -14,4 +14,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface StudentService extends IService<Student> {
 	Object javaEight(Student param);
+	void myTask();
+	
 }

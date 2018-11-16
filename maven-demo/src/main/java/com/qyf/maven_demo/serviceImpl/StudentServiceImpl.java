@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -61,12 +62,27 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 		 */
 		List<Student> commonClass=stuList.stream().filter(a->a.getStuClass().equals("一班")).collect(Collectors.toList());
 		/**
-		 * list 从集合中过滤出来符合条件的元素,然后将集合中的数据按照某个属性求和
+		 * list 从集合中过滤出来符合条件的元素,然后将集合中的数据按照某个属性（对象型）求和
 		 */
 		BigDecimal moneyTotal=stuList.stream().filter(a->a.getStuClass().equals("一班")).map(Student::getMoney).reduce(BigDecimal.ZERO, BigDecimal::add);
+		/**
+		 * list int型属性的求和
+		 */
 		int ageTotal=stuList.stream().mapToInt(Student::getAge).sum();
 		
 		System.out.println(listToMap1); System.out.println(listToMap2); System.out.println(listToMap3); System.out.println(commonClass);System.out.println(moneyTotal);System.out.println(ageTotal);
 		return null;
+	}
+
+	/**
+	 * 定时任务实现类
+	 * 写法跟平时一样，没有什么不同
+	 */
+	@Override
+	public void myTask() {
+		Student stu=new Student();
+		stu.setId(1);
+		stu.setModifyDate(new Date());
+		mapper.updateById(stu);
 	}
 }
