@@ -1,6 +1,7 @@
 package com.qyf.maven_demo.web;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -21,6 +22,8 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.qyf.maven_demo.entity.StudentValidate;
 import com.qyf.maven_demo.model.Student;
 import com.qyf.maven_demo.service.StudentService;
+
+import io.swagger.annotations.ApiParam;
 
 /**
  * <p>
@@ -82,7 +85,7 @@ public class StudentController {
 	 * 查询
 	 */
 	@GetMapping("/getlist/{data}")
-	private List<Student> selectList(@PathVariable String data){
+	private List<Student> selectList(@PathVariable @ApiParam(value="查询参数",defaultValue="{\"name\":\"qinyufeng\"}") String data){
 		Student stuParam=JSON.parseObject(data, Student.class);
 		Wrapper<Student> wrapper=new EntityWrapper<>();
 		wrapper.like("name", stuParam.getName());
@@ -133,5 +136,27 @@ public class StudentController {
 	@PostMapping("/javaEight")
 	private Object javaEight(@RequestBody Student param){
 		return service.javaEight(param);
+	}
+	/************************ 通用的增删改查 ，可以通过所传的参数来控制结果 *************************************/
+	/*
+	 * 新增插入
+	 */
+	@PostMapping("/insertCommon")   
+	private Object insertCommon(@RequestBody Map<String,Object> params){
+		return service.insertCommon(params);
+	}
+	/*
+	 * 修改更新
+	 */
+	@PostMapping("/updateCommon")   
+	private Object updateCommon(@RequestBody Map<String,Object> params){
+		return service.updateCommon(params);
+	}
+	/*
+	 * 查询
+	 */
+	@PostMapping("/selectCommon")   
+	private Object selectCommon(@RequestBody Map<String,Object> params){
+		return service.selectCommon(params);
 	}
 }

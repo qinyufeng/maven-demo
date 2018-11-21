@@ -3,7 +3,7 @@
 <mapper namespace="com.qyf.maven_demo.mapper.StudentMapper">
 
 	<!-- 开启二级缓存 -->
-	<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.qyf.maven_demo.model.Student">
@@ -21,10 +21,174 @@
 		<result column="father" property="father" />
 		<result column="mother" property="mother" />
 	</resultMap>
-
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, stuId AS stuId, stuClass AS stuClass, name, age, phone, qq, wechat, address, height, weight, father, mother
     </sql>
+    <!-- 数据库表名 -->
+	<sql id="base_table_name">
+	     student
+	</sql>
+	<!-- 数据表主键 -->
+	<sql id="prk">
+	 id
+	</sql>
+	
+    <!--insert:-Selective: 动态字段插入记录 -->
+	<insert id="insertCommon">
+		insert into
+		<include refid="base_table_name" />
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<foreach collection="mapperMap.fieldNames" item="fieldName"
+				index="i" separator=",">
+				<trim>
+					${fieldName}
+				</trim>
+			</foreach>
+		</trim>
+		values
+		<trim prefix=" (" suffix=")" suffixOverrides=",">
+			<foreach collection="mapperMap.fieldValues" item="fieldValue"
+				index="i" separator=",">
+				#{fieldValue}
+			</foreach>
+		</trim>
+	</insert>
+		<!--update:-Selective: 动态字段插入记录 -->
+	<update id="updateCommon">
+		update
+		<include refid="base_table_name" />
+		<set>
+			<trim>
+				<foreach collection="mapperMap.fieldNames" item="fieldName"
+					separator=",">
+					<if test="fieldName!='posKeyCode'">
 
+						<trim>
+							${fieldName}=#{mapperMap.paramMap.${fieldName}}
+						</trim>
+
+					</if>
+
+				</foreach>
+			</trim>
+		</set>
+		where
+		<include refid="prk" />
+		=#{mapperMap.paramMap.id}
+	</update>
+		<!--select:-default:默认查询 -->
+	<select id="selectCommon" resultType="HashMap">
+		select
+		<trim suffixOverrides=",">
+			<choose>
+				<when test="mapperMap.destFieldNames==null">
+					<include refid="Base_Column_List" />
+				</when>
+				<otherwise>
+					<foreach collection="mapperMap.destFieldNames" item="destFieldName"
+						index="i" separator=",">
+						<trim>
+							${destFieldName}
+						</trim>
+					</foreach>
+				</otherwise>
+			</choose>
+		</trim>
+		from
+		<include refid="base_table_name" />
+		<where>
+
+			<trim suffixOverrides="and">
+
+				<if test="mapperMap.whereFieldNames!=null">
+					<foreach collection="mapperMap.whereFieldNames" item="whereFieldName"
+						index="i" separator="">
+
+						${whereFieldName} =
+						#{mapperMap.paramMap.${whereFieldName}} and
+
+					</foreach>
+				</if>
+				<if test="mapperMap.vagueFieldNames!=null">
+					<foreach collection="mapperMap.vagueFieldNames" item="vagueFieldName"
+						index="i" separator="">
+
+						LOCATE(#{mapperMap.paramMap.${vagueFieldName}},${vagueFieldName})>0
+						and
+
+					</foreach>
+				</if>
+				<if test="mapperMap.inConditions!=null">
+					<foreach collection="mapperMap.inConditions" item="inCondition"
+						index="i" separator="">
+
+						${inCondition} and
+
+					</foreach>
+				</if>
+
+			</trim>
+
+		</where>
+		<if test="mapperMap.groupByFieldNames!=null">
+			<trim suffixOverrides=",">
+				GROUP BY
+				<foreach collection="mapperMap.groupByFieldNames" item="groupByFieldName"
+					index="i" separator=",">
+					<trim>
+						${groupByFieldName}
+					</trim>
+				</foreach>
+			</trim>
+		</if>
+		ORDER BY
+		<trim suffixOverrides=",">
+			<choose>
+				<when test="mapperMap.orderByFields!=null">
+					<foreach collection="mapperMap.orderByFields" item="orderByField"
+						index="i" separator=",">
+						${orderByField}
+					</foreach>
+				</when>
+				<otherwise>
+					<include refid="prk" />
+				</otherwise>
+			</choose>
+		</trim>
+		<choose>
+			<when test="mapperMap.asc">
+				ASC
+			</when>
+			<otherwise>
+				DESC
+			</otherwise>
+		</choose>
+	</select>
+		<!--delete: 删除 -->
+	<delete id="deleteCommon" parameterType="java.lang.Integer">
+		delete from
+		<include refid="base_table_name" />
+		<where>
+			<if test="mapperMap.whereFieldNames!=null">
+				<trim suffixOverrides=" and ">
+					<choose>
+						<when test="mapperMap.vague">
+							<foreach collection="mapperMap.whereFieldNames" item="whereFieldName"
+								index="i" separator=" and ">
+								LOCATE(#{mapperMap.paramMap.${whereFieldName}},${whereFieldName})>0
+							</foreach>
+						</when>
+						<otherwise>
+							<foreach collection="mapperMap.whereFieldNames" item="whereFieldName"
+								index="i" separator=" and ">
+								${whereFieldName}
+								=#{mapperMap.paramMap.${whereFieldName}}
+							</foreach>
+						</otherwise>
+					</choose>
+				</trim>
+			</if>
+		</where>
+	</delete>
 </mapper>

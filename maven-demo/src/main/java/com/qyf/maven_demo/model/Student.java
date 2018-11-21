@@ -21,20 +21,32 @@ public class Student implements Serializable {
 
 	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
+	
 	@TableField("stuId")
 	private String stuId;
 	@TableField("stuClass")
 	private String stuClass;
+	@TableField("name")
 	private String name;
+	@TableField("age")
 	private Integer age;
+	@TableField("phone")
 	private String phone;
+	@TableField("qq")
 	private String qq;
+	@TableField("wechat")
 	private String wechat;
+	@TableField("address")
 	private String address;
+	@TableField("height")
 	private Double height;
+	@TableField("weight")
 	private Double weight;
+	@TableField("father")
 	private String father;
+	@TableField("mother")
 	private String mother;
+	@TableField("money")
 	private BigDecimal money;
     /**
      * 创建日期
@@ -44,6 +56,7 @@ public class Student implements Serializable {
     /**
      * 创建者
      */
+	@TableField("creator")
 	private String creator;
     /**
      * 修改时间
@@ -53,6 +66,7 @@ public class Student implements Serializable {
     /**
      * 修改者
      */
+	@TableField("modifier")
 	private String modifier;
 
 	public Date getCreateDate() {
@@ -229,6 +243,8 @@ public class Student implements Serializable {
 			", father=" + father +
 			", mother=" + mother +
 			", money=" + money +
+			", modifyDate=" + modifyDate +
+			", createDate=" + createDate +
 			"}";
 	}
 }

@@ -3,19 +3,28 @@ package com.qyf.maven_demo.serviceImpl;
 import com.qyf.maven_demo.model.Student;
 import com.qyf.maven_demo.mapper.StudentMapper;
 import com.qyf.maven_demo.service.StudentService;
+
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 /**
  * <p>
@@ -30,7 +39,8 @@ import org.springframework.stereotype.Service;
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
 	@Autowired
 	private StudentMapper mapper;
-
+	@Autowired
+	private StudentService service;
 	@Override
 	public Object javaEight(Student param) {
 		//根据参数从数据库查出符合条件的参数
@@ -80,9 +90,222 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 	 */
 	@Override
 	public void myTask() {
+		
 		Student stu=new Student();
-		stu.setId(1);
+		stu.setId(4);
+		stu.setName("qinyufeng4");
+		stu.setAge(22);
 		stu.setModifyDate(new Date());
-		mapper.updateById(stu);
+		service.insertOrUpdate(stu);
+		//mapper.updateById(stu);
+	}
+
+	@Override
+	public Object insertCommon(Map<String, Object> params) {
+		
+		List<Map<String, Object>> stuList = (List<Map<String, Object>>) params.get("list");
+		try {
+			for (Map<String, Object> map : stuList) {
+				// 生成sql参数：将所有key放到fieldNames，所有value放到fieldValues
+				Map<String, Object> keysAndVlues = separateMapByKeysAndVlues(map, "fieldNames", "fieldValues", true);//true允许某个字段值为null
+
+				// 执行数据库操作
+				Map<String, Object> updateMap = new HashMap<String, Object>();
+				updateMap.put("fieldNames", keysAndVlues.get("fieldNames"));
+				updateMap.put("fieldValues", keysAndVlues.get("fieldValues"));
+				mapper.insertCommon(updateMap);
+			}
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+		return stuList;
+	}
+
+	@Override
+	public Object updateCommon(Map<String, Object> params) {
+		List<Map<String, Object>> stuList = (List<Map<String, Object>>) params.get("list");
+		try {
+
+			for (Map<String, Object> map : stuList) {
+				// 生成sql参数
+				Map<String, Object> keysAndVlues = separateMapByKeysAndVlues(map, "fieldNames", "fieldValues", true);
+
+				Map<String, Object> updateMap = new HashMap<>();
+				updateMap.put("fieldNames", keysAndVlues.get("fieldNames"));
+				updateMap.put("paramMap", map);
+
+				mapper.updateCommon(updateMap);
+			}
+
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+		return stuList;
+	}
+
+	@Override
+	public Object selectCommon(Map<String, Object> params) {
+
+		// 返回结果
+		List<Map<String, Object>> result = new ArrayList<>();
+
+		try {
+			// 生成sql参数
+			Map<String, Object> paramMap = (Map<String, Object>) params.get("paramMap");
+			// 模糊查询字段
+			List<String> vagueFieldNames = getStringList(params.get("vagueFieldNames"));
+			// in查询字段
+			List<String> inConditionList = new ArrayList<>();
+
+			List<String> inFieldNames = getStringList(params.get("inFieldNames"));
+			for (String name : inFieldNames) {
+
+				// for-iteam
+				Object valueObject = paramMap.get(name);
+
+				String joinString = getJoinString(valueObject);
+				if (joinString == null || "".equals(joinString)) {
+					continue;
+				}
+				String conditionIteam = name + " in " + " ( " + getJoinString(valueObject) + " ) ";
+				// 添加iteam
+				inConditionList.add(conditionIteam);
+			}
+			params.remove("inFieldNames");
+
+			// 分离字段和值
+			Map<String, Object> keysAndVlues = separateMapByKeysAndVlues(paramMap, "fieldNames", "fieldValues", false);
+			List<String> paramNames = (List<String>) keysAndVlues.get("fieldNames");
+
+			if (paramNames != null && paramNames.size() > 0) {
+
+				// 从 paramMap中分离 模糊查询字段
+				paramNames.removeAll(vagueFieldNames);
+				// 从 paramMap中分离 in查询字段
+				paramNames.removeAll(inFieldNames);
+
+				// 常规字段名字
+				params.put("whereFieldNames", paramNames);
+				// 模糊查询字段名字
+				params.put("vagueFieldNames", vagueFieldNames);
+				// in查询字段名字
+				params.put("inConditions", inConditionList);
+			}
+
+			// 分页参数，和总记录数
+			Page<Student> pageParam = pageParam(params, Student.class);
+			// 执行数据库操作
+			result = mapper.selectCommon(pageParam, params);
+
+			return result;
+
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+   
+	// --------------------------------------方法区--------------------------------------
+
+	private Map<String, Object> separateMapByKeysAndVlues(Map<String, Object> map, String keyName, String valueName,
+			boolean needNull) {
+
+		HashMap<String, Object> result = new HashMap<String, Object>();
+
+		if (map == null) {
+			return result;
+		}
+
+		Set<Entry<String, Object>> entrySet = map.entrySet();
+
+		List<String> keys = new ArrayList<>();
+		List<Object> values = new ArrayList<>();
+
+		for (Entry<String, Object> entry : entrySet) {
+
+			String key = entry.getKey();
+			Object value = entry.getValue();
+
+			// 是否跳过为null的字段
+			if (!needNull && value == null) {
+				continue;
+			}
+
+			keys.add(key);
+			values.add(value);
+
+		}
+
+		result.put(keyName, keys);
+		result.put(valueName, values);
+
+		return result;
+
+	}
+	/**
+	 * 获取字符串和数组
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static List<String> getStringList(Object data) {
+		List<String> result = new ArrayList<>();
+
+		if (data == null) {
+			return result;
+		}
+
+		if (data instanceof Collection<?>) {
+			Collection<?> collection = (Collection<?>) data;
+			for (Object object : collection) {
+				result.add(object + "");
+			}
+		} else {
+			result.addAll(Arrays.asList((data + "").split(",")));
+		}
+		return result;
+	}
+	private String getJoinString(Object object) {
+		List<String> list = getStringList(object);
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < list.size(); i++) {
+			String iteam = list.get(i);
+			iteam = "'" + iteam + "'";
+			if (i != list.size() - 1) {
+				iteam = iteam + ",";
+			}
+			result.append(iteam);
+		}
+		return result.toString();
+	}
+	private <T> Page<T> pageParam(Map<String, Object> data, Class<T> className) {
+
+		Object paging = data.get("paging");
+
+		int pageSize = 10;
+		int currentPage = 1;
+
+		// 不分页（）
+		if (paging instanceof Boolean && !(Boolean) data.get("paging")) {
+
+			pageSize = Integer.MAX_VALUE;
+
+		} else {
+
+			// 分页
+			if (!ObjectUtils.isEmpty(data.get("pageSize"))) {
+
+				pageSize = (int)data.get("pageSize");
+
+			}
+
+		}
+		if (!ObjectUtils.isEmpty(data.get("currentPage"))) {
+
+			currentPage =(int)data.get("currentPage");
+
+		}
+
+		return new Page<T>(currentPage, pageSize);
+
 	}
 }

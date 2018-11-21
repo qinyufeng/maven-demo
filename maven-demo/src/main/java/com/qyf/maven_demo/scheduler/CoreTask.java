@@ -17,7 +17,7 @@ public class CoreTask {
 	@Autowired
 	private StudentService stuService;
 	
-	@Scheduled(cron="0 0/1 * * * ?")//没隔一分钟执行一次
+	@Scheduled(cron="0 30 22 * * ?")//每天晚上十点半执行一次
 	public void taskTestOne(){ 
 		logger.info("定时任务开始执行");
 		System.out.println("执行定时任务");
@@ -43,4 +43,12 @@ public class CoreTask {
 ？  仅被用于天（月）和天（星期）两个子表达式，表示不指定值   当2个子表达式其中之一被指定了值以后，为了避免冲突，需要将另一个子表达式的值设为“？”
 * 代表所有可能的值   因此，“*”在子表达式（月）里表示每个月的含义，“*”在子表达式（天（星期））表示星期的每一天
  
+ */
+/**
+Map<String,Object> param=new HashMap<>();
+List<Map<String, Object>> arryList = new ArrayList<Map<String,Object>>();
+Map<String, Object> map = new HashMap<String,Object>();
+map.put("stuId","20140390231" );map.put("stuClass", "2");map.put("name", "覃玉凤");map.put("age", 28);map.put("id", "3");
+arryList.add(map);
+param.put("list", arryList);
  */
