@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.Api;
 
+import com.qyf.maven_demo.model.Calculate;
 import com.qyf.maven_demo.service.ICalculateService;
 
 /**
@@ -21,5 +22,9 @@ public class CalculateController {
 
 	@Autowired
 	private ICalculateService service;
-	
+	/************************ 常用的计算 及注意事项*************************************/
+	@PostMapping("/calculate")
+	private Object calculate(@RequestBody Calculate param){
+		return service.calculate(param);
+	}
 }

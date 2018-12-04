@@ -326,12 +326,5 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 		return new Page<T>(currentPage, pageSize);
 
 	}
-
-	@Override
-	public Object calculate(Student param) {
-		/**
-		 * BigDecimal 数据类型的加减乘除
-		 */
-		return null;
-	}
+	
 }
