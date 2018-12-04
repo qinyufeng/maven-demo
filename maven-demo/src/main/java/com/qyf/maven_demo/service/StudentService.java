@@ -20,6 +20,4 @@ public interface StudentService extends IService<Student> {
 	Object insertCommon(Map<String,Object> params);
 	Object updateCommon(Map<String,Object> params);
 	Object selectCommon(Map<String,Object> params);
-	Object calculate(Student param);
-	
 }
