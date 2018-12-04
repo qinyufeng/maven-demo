@@ -137,6 +137,12 @@ public class StudentController {
 	private Object javaEight(@RequestBody Student param){
 		return service.javaEight(param);
 	}
+	/************************ 常用的计算 及注意事项*************************************/
+	@PostMapping("/calculate")
+	private Object calculate(@RequestBody Student param){
+		return service.calculate(param);
+	}
+	
 	/************************ 通用的增删改查 ，可以通过所传的参数来控制结果 *************************************/
 	/*
 	 * 新增插入

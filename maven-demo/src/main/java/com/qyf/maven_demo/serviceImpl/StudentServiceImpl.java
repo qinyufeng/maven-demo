@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +81,23 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 		 */
 		int ageTotal=stuList.stream().mapToInt(Student::getAge).sum();
 		
+		/**
+		 * List<Student> 转 List<String>
+		 */
+		List<String> stuid=stuList.stream().map(Student::getStuId).collect(Collectors.toList());
+		
+		/**
+		 *        分组 List<Student> 转 List<String,List<Student>
+		 */
+		Map<String, List<Student>> groupByStuid = stuList.stream().collect(Collectors.groupingBy(Student::getStuId));
+		/**
+		 *  List<Student>根据某个属性排序
+		 */
+		 List<Student> stuidSort = stuList.stream().sorted(Comparator.comparing(Student::getStuId))
+	                .collect(Collectors.toList());//升序
+		 List<Student> stuidSortReversed = stuList.stream().sorted(Comparator.comparing(Student::getStuId).reversed())
+	                .collect(Collectors.toList());//降序
+		 
 		System.out.println(listToMap1); System.out.println(listToMap2); System.out.println(listToMap3); System.out.println(commonClass);System.out.println(moneyTotal);System.out.println(ageTotal);
 		return null;
 	}
@@ -307,5 +325,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
 		return new Page<T>(currentPage, pageSize);
 
+	}
+
+	@Override
+	public Object calculate(Student param) {
+		/**
+		 * BigDecimal 数据类型的加减乘除
+		 */
+		return null;
 	}
 }
