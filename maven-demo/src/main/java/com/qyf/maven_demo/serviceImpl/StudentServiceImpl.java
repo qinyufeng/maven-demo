@@ -326,5 +326,18 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 		return new Page<T>(currentPage, pageSize);
 
 	}
+
+	@Override
+	public List<Student> StrSortSql(Map<String, Object> params) {
+		/**
+		 *  SELECT * FROM `表名` ORDER BY CONVERT(要排序的字段名, SIGNED);
+		 * 或者 SELECT * FROM `表名` ORDER BY CAST(要排序的字段名 AS SIGNED);
+		 */
+		Wrapper<Student> wrapper=new EntityWrapper<>();
+		wrapper.setSqlSelect("id,stuId,name,age");//要查询的字段
+		wrapper.orderBy(" CONVERT(name,SIGEND)");
+		List<Student> selectList = mapper.selectList(wrapper);
+		return selectList;
+	}
 	
 }

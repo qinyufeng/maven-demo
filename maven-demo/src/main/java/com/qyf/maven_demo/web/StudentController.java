@@ -160,4 +160,9 @@ public class StudentController {
 	private Object selectCommon(@RequestBody Map<String,Object> params){
 		return service.selectCommon(params);
 	}
+	/************************ sql查询中的字符串排序 *************************************/
+	@GetMapping("/StrSortSql")
+	private List<Student> StrSortSql(@RequestBody Map<String,Object> params){
+		return service.StrSortSql(params);
+	}
 }

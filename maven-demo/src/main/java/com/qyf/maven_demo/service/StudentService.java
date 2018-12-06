@@ -2,6 +2,7 @@ package com.qyf.maven_demo.service;
 
 import com.qyf.maven_demo.model.Student;
 
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.service.IService;
@@ -20,4 +21,5 @@ public interface StudentService extends IService<Student> {
 	Object insertCommon(Map<String,Object> params);
 	Object updateCommon(Map<String,Object> params);
 	Object selectCommon(Map<String,Object> params);
+	List<Student> StrSortSql(Map<String,Object> params);
 }
