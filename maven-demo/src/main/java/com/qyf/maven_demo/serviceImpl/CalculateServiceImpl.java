@@ -63,7 +63,7 @@ public class CalculateServiceImpl extends ServiceImpl<CalculateMapper,Calculate>
 		}
 		@Override
 		public Object calculateByStream(Calculate param) {
-			
+			calculateByStreamTest();
 			return null;
 		}
 		/************************ 常用的计算 使用Java8 的strea计算*************************************/
