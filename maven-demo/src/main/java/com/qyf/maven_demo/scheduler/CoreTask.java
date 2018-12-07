@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.qyf.maven_demo.service.ISequenceService;
 import com.qyf.maven_demo.service.StudentService;
 
 @Service
@@ -16,7 +17,8 @@ public class CoreTask {
 	
 	@Autowired
 	private StudentService stuService;
-	
+	@Autowired
+	private ISequenceService iSequenceService;
 	@Scheduled(cron="0 30 22 * * ?")//每天晚上十点半执行一次
 	public void taskTestOne(){ 
 		logger.info("定时任务开始执行");
@@ -28,6 +30,11 @@ public class CoreTask {
 		logger.info("定时任务开始执行");
 		stuService.myTask();
 		logger.info("定时任务执行结束");
+	}
+	@Scheduled(cron="0 0/1 * * * ?")
+	private void test() throws Exception{
+		String test=iSequenceService.getSequence("xh", "yyyyMMdd", "wl", 2);
+		System.out.println(test);
 	}
 
 }

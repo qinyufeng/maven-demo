@@ -3,7 +3,7 @@
 <mapper namespace="com.qyf.maven_demo.mapper.CalculateMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.qyf.maven_demo.entity.Calculate">
+	<resultMap id="BaseResultMap" type="com.qyf.maven_demo.model.Calculate">
 		<id column="id" property="id" />
 		<result column="price" property="price" />
 		<result column="calNum" property="calNum" />
