@@ -19,7 +19,10 @@ public class Calculate implements Serializable {
     @TableField("id")
 	@JsonProperty("id")
 	private Integer id;
-	
+    
+    @TableField("NO")
+	@JsonProperty("NO")
+	private String NO;
     @TableField("price")
 	@JsonProperty("price")
 	private BigDecimal price;
@@ -145,6 +148,13 @@ public class Calculate implements Serializable {
 	public void setFloatC(Float floatC) {
 		this.floatC = floatC;
 	}
-	
+
+	public String getNO() {
+		return NO;
+	}
+
+	public void setNO(String nO) {
+		NO = nO;
+	}
 
 }

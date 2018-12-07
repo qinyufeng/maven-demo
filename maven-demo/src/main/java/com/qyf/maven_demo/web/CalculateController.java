@@ -27,4 +27,9 @@ public class CalculateController {
 	private Object calculate(@RequestBody Calculate param){
 		return service.calculate(param);
 	}
+	/************************ 常用的计算 使用Java8 的strea计算*************************************/
+	@PostMapping("/calculateByStream")
+	private Object calculateByStream(@RequestBody Calculate param){
+		return service.calculateByStream(param);
+	}
 }
