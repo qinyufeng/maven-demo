@@ -97,6 +97,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 	                .collect(Collectors.toList());//升序
 		 List<Student> stuidSortReversed = stuList.stream().sorted(Comparator.comparing(Student::getStuId).reversed())
 	                .collect(Collectors.toList());//降序
+		/**
+		 *  List<Student>排序
+		 */
 		 
 		System.out.println(listToMap1); System.out.println(listToMap2); System.out.println(listToMap3); System.out.println(commonClass);System.out.println(moneyTotal);System.out.println(ageTotal);
 		return null;
@@ -338,6 +341,64 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 		wrapper.orderBy(" CONVERT(name,SIGEND)");
 		List<Student> selectList = mapper.selectList(wrapper);
 		return selectList;
+	}
+
+	@Override
+	public void cycle() {
+
+	    /**
+	                  * 它们的执行效率排序为 ：for > forEach > stream
+	                  * 它们的代码编写量排序为：for < forEach < stream
+	     */
+
+		List<Student> list=getDataList();
+		//方式1：for循环
+		for(Student obj:list) {
+			obj.setStuClass("1");//会改变源数据list
+		}
+		//方式2：Java8的forEach
+		list.forEach(obj -> {
+			obj.setStuClass("2");//会改变源数据list
+		});
+		//方式2：java8的stream foreach
+		list.stream().forEach(item -> item.setStuId("2"));
+		
+	}
+	private static List<Student> getDataList(){
+		List<Student> list=new ArrayList<>();
+		Student obj1=new Student();
+		obj1.setStuId("11");
+		obj1.setName("qyf");
+		obj1.setAge(22);
+		Student obj2=new Student();
+		obj2.setStuId("22");
+		obj2.setName("qin");
+		obj2.setAge(22);
+		Student obj3=new Student();
+		obj3.setStuId("33");
+		obj3.setName("yu");
+		obj3.setAge(22);
+		list.add(obj1);list.add(obj2);list.add(obj3);
+		return list;
+	}
+/**
+     * 它们的执行效率排序为 ：for > forEach > stream
+     * 它们的代码编写量排序为：for < forEach < stream
+*/
+	public static void main(String[] args) {
+		List<Student> list1=getDataList();
+		//方式1：for循环
+		for(Student obj:list1) {//会改变源数据list1
+			obj.setStuClass("1");
+		}
+		//方式2：Java8的forEach
+		list1.forEach(obj -> {
+			obj.setStuClass("2");//会改变源数据list1
+		});
+		//方式2：java8的stream
+		List<Student> list3=list1.stream().map(item -> item.setStuId("3")).collect(Collectors.toList());
+		
+		System.out.println();
 	}
 	
 }

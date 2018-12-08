@@ -22,4 +22,5 @@ public interface StudentService extends IService<Student> {
 	Object updateCommon(Map<String,Object> params);
 	Object selectCommon(Map<String,Object> params);
 	List<Student> StrSortSql(Map<String,Object> params);
+	void cycle();
 }

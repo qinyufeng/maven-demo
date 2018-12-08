@@ -165,4 +165,10 @@ public class StudentController {
 	private List<Student> StrSortSql(@RequestBody Map<String,Object> params){
 		return service.StrSortSql(params);
 	}
+	/************************多种循环方式对比 *************************************/
+	@PostMapping("/cycle")   
+	private Object cycle(){
+		service.cycle();
+		return null;
+	}
 }

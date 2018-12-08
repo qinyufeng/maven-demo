@@ -100,4 +100,17 @@ public class CalculateServiceImpl extends ServiceImpl<CalculateMapper,Calculate>
 			list.add(obj1);list.add(obj2);list.add(obj3);
 			return list;
 		}
+		private static void calculeteTest() {
+			List<Integer> intList=new ArrayList<>();
+			intList.add(1);intList.add(2);intList.add(1);intList.add(1);
+			int sum = intList.stream().reduce(0, (x,y) -> x+y);
+			//或者
+			int sum2 = intList.stream().reduce(0, Integer::sum);
+			
+			//
+			System.out.println(sum+","+sum2);//计算结果sum=5,sum2=5
+		}
+		public static void main(String[] args) {
+			calculeteTest();
+		}
 }
