@@ -59,6 +59,11 @@ public class Student implements Serializable {
 	@TableField("creator")
 	private String creator;
     /**
+     * 创建者id
+     */
+	@TableField("creatorId")
+	private int creatorId;
+    /**
      * 修改时间
      */
 	@TableField("modifyDate")
@@ -81,8 +86,9 @@ public class Student implements Serializable {
 		return creator;
 	}
 
-	public void setCreator(String creator) {
+	public Student setCreator(String creator) {
 		this.creator = creator;
+		return this;
 	}
 
 	public Date getModifyDate() {
@@ -208,14 +214,14 @@ public class Student implements Serializable {
 		this.father = father;
 		return this;
 	}
+	
 
 	public String getMother() {
 		return mother;
 	}
 
-	public Student setMother(String mother) {
+	public void setMother(String mother) {
 		this.mother = mother;
-		return this;
 	}
 
 	public BigDecimal getMoney() {
@@ -224,6 +230,15 @@ public class Student implements Serializable {
 
 	public void setMoney(BigDecimal money) {
 		this.money = money;
+	}
+
+	public Integer getCreatorId() {
+		return creatorId;
+	}
+
+	public Student setCreatorId(Integer creatorId) {
+		this.creatorId = creatorId;
+		return this;
 	}
 
 	@Override
@@ -245,6 +260,8 @@ public class Student implements Serializable {
 			", money=" + money +
 			", modifyDate=" + modifyDate +
 			", createDate=" + createDate +
+			",creator="+creator+
+			",creatorId="+creatorId+
 			"}";
 	}
 }
