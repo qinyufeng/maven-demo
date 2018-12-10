@@ -1,7 +1,9 @@
 package com.qyf.maven_demo.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -135,6 +137,12 @@ public class StudentController {
 	 */
 	@PostMapping("/javaEight")
 	private Object javaEight(@RequestBody Student param){
+		List<Student> list=new ArrayList<>();
+		//给每条记录拼上创建人和创建人id字段
+		String name="qinyufeng";
+		int creatorId=111;
+		List<Student> list2=list.stream().map((item ->item.setCreator(name))).collect(Collectors.toList());
+		List<Student> list3=list2.stream().map((item ->item.setCreatorId(creatorId))).collect(Collectors.toList());
 		return service.javaEight(param);
 	}
 	
