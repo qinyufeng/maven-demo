@@ -7,7 +7,11 @@ import com.qyf.maven_demo.service.ICalculateService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -67,6 +71,7 @@ public class CalculateServiceImpl extends ServiceImpl<CalculateMapper,Calculate>
 			return null;
 		}
 		/************************ 常用的计算 使用Java8 的strea计算*************************************/
+		/**BigDecimal 类型的数据**/
 		private void calculateByStreamTest() {
 			List<Calculate> list=getDataList();
 			//计算总数量（求和）
@@ -76,20 +81,46 @@ public class CalculateServiceImpl extends ServiceImpl<CalculateMapper,Calculate>
 			//计算符合条件的总数量（求和）
 			BigDecimal calNumTotalFilter=list.stream().filter(item -> item.getNO().equals("1"))
 					.map(Calculate::getCalNum).reduce(BigDecimal.ZERO, BigDecimal::add);//reduce(identity, accumulator)：可以认为第一个参数为默认值，但需要满足identity op x = x，所以对于求和操作，identity的值为0，对于求积操作，identity的值为1。
-			System.out.println(calNumTotalFilter);	
+			//求最大值
+			Optional<Calculate> maxOpt=list.stream().max((item1,item2)-> item1.getCalNum().compareTo(item2.getCalNum()));
+			Calculate maxCalculate=maxOpt.get();
+			BigDecimal maxValue=maxCalculate.getCalNum();
+			//求最小值
+			Optional<Calculate> minOpt=list.stream().min((item1,item2)->item1.getCalNum().compareTo(item2.getCalNum()));
+			BigDecimal minValue=minOpt.get().getCalNum();
+			System.out.println(minValue + "," + maxValue);	
+			//concat 两个list组合     相当于sql中的 unin all
+			List<Calculate> list1=getDataList();
+			List<Calculate> list2=getDataList();
+			List<Calculate> listConcatLiat2=Stream.concat(list1.stream(), list2.stream()).collect(Collectors.toList());
 		}
-		
+		/**Integer  类型的数据**/
+		private void calculateByStreamTest2() {
+			List<Integer> intList=new ArrayList<>();intList.add(3);intList.add(2);intList.add(1);intList.add(1);
+			//加法，
+			int sum1 = intList.stream().reduce(0, (x,y) -> x+y);
+			//或者
+			int sum2 = intList.stream().reduce(0, Integer::sum);
+			//最小值
+			Optional<Integer> minOpt=intList.stream().min((item1,item2) -> item1.compareTo(item2)) ;
+			int minValue=minOpt.get();
+			//最大值
+			Optional<Integer> maxOpt=intList.stream().max((item1,item2) -> item1.compareTo(item2)) ;
+			int maxValue=maxOpt.get();
+			System.out.println(sum1+","+sum2+","+minValue+ "," +maxValue);//计算结果sum1=5,sum2=5,minValue=1,maxValue=3
+			
+		}
 		private List<Calculate> getDataList(){
 			List<Calculate> list=new ArrayList<>();
 			Calculate obj1=new Calculate();
 			obj1.setPrice(new BigDecimal(1));
 			obj1.setNums(new BigDecimal(2));
-			obj1.setCalNum(new BigDecimal(2));
+			obj1.setCalNum(new BigDecimal(1));
 			obj1.setNO("1");
 			Calculate obj2=new Calculate();
 			obj2.setPrice(new BigDecimal(1));
 			obj2.setNums(new BigDecimal(2));
-			obj2.setCalNum(new BigDecimal(2));
+			obj2.setCalNum(new BigDecimal(1));
 			obj2.setNO("1");
 			Calculate obj3=new Calculate();
 			obj3.setPrice(new BigDecimal(1));
@@ -100,17 +131,9 @@ public class CalculateServiceImpl extends ServiceImpl<CalculateMapper,Calculate>
 			list.add(obj1);list.add(obj2);list.add(obj3);
 			return list;
 		}
-		private static void calculeteTest() {
-			List<Integer> intList=new ArrayList<>();
-			intList.add(1);intList.add(2);intList.add(1);intList.add(1);
-			int sum = intList.stream().reduce(0, (x,y) -> x+y);
-			//或者
-			int sum2 = intList.stream().reduce(0, Integer::sum);
-			
-			//
-			System.out.println(sum+","+sum2);//计算结果sum=5,sum2=5
+		private static void test() {
 		}
 		public static void main(String[] args) {
-			calculeteTest();
+			test();
 		}
 }
