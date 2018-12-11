@@ -2,6 +2,8 @@ package com.qyf.maven_demo.utils.Date;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,8 +26,6 @@ public final class DateUtils {
 		String YY_MM_DD = "yy-MM-dd";
 	}
 	public static void main(String[] args) throws ParseException {
-
-        System.out.println();
 	}
 	
 	public static final String getDateStr(Object date, String pattern) {
@@ -87,7 +87,9 @@ public final class DateUtils {
                     DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dt = LocalDateTime.parse("2018-12-03 10:15:30",pattern2); //严格按照ISO yyyy-MM-dd验证，03写成3都不行
         /******************** 日期加减 ***********************/
-        dateTimeAddOrSubtract();
+        dateTimeAddOrSubtract();      
+        /********************  判断当前日期属于星期几 ***********************/
+        dayOfWeek(LocalDateTime.now());
 	}
 	/**
 	 * 日期加减
@@ -101,7 +103,47 @@ public final class DateUtils {
         //改变时间后会返回一个新的实例nextYearTime
         LocalDateTime nextYearTime = dateTime.plusYears(1);//年份增加一年
         LocalDateTime brefYearTime = dateTime.minusYears(1);//年份减一年
+        LocalDateTime nextMothTime=dateTime.plusMonths(1);//月份加一月
+        LocalDateTime brefMothTime=dateTime.minusMonths(1);//月份减一月
         LocalDateTime nextDateTime = dateTime.plusDays(1);//日期增加一天
         LocalDateTime brefDateTime = dateTime.minusDays(1);//日期减一天
+      //自定义时间，使用with方法设置月份
+        LocalDateTime time = LocalDateTime.of(2018, 1, 1, 1, 1,1);
+        LocalDateTime changeTime = time.withMonth(12);
+        System.out.println(changeTime); //2018-12-01T01:01:01
+	}
+	/**
+	 *       判断当前日期属于星期几
+	 * @param time
+	 * @return 星期（一、二、三、四、五、六、日)
+	 */
+	private String dayOfWeek(LocalDateTime time) {
+       // LocalDateTime time = LocalDateTime.now();
+        DayOfWeek dayOfWeek = time.getDayOfWeek();
+        System.out.println(dayOfWeek);
+        if("MONDAY".equals(dayOfWeek.toString())) return "星期一";
+        if("TUESDAY".equals(dayOfWeek.toString())) return "星期二";
+        if("WEDNESDAY".equals(dayOfWeek.toString())) return "星期三";
+        if("THURSDAY".equals(dayOfWeek.toString())) return "星期四";
+        if("FRIDAY".equals(dayOfWeek.toString())) return "星期五";
+        if("SATURDAY".equals(dayOfWeek.toString())) return "星期六";
+        if("SUNDAY".equals(dayOfWeek.toString())) return "星期日";
+        return "";
+	}
+	/**
+	 *  java.time.Duration
+	 *           此类用来计算两同类型日期的时间差
+	 */
+	private void durationTime() {
+		String timeStr="2018-12-11 00:00:00";
+		LocalDateTime start = LocalDateTime.parse(timeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		LocalDateTime end = start.plusDays(1);
+
+		 Duration result = Duration.between(start, end);
+		 System.out.println(result.toDays()); //1
+		 System.out.println(result.toHours()); //24
+		 System.out.println(result.toMinutes()); //1440
+		 System.out.println(result.toMillis()); //86400000
+		 System.out.println(result.toNanos()); //86400000000000
 	}
 }

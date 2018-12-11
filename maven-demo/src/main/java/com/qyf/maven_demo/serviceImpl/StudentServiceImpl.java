@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,9 +48,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 	public Object javaEight(Student param) {
 		//根据参数从数据库查出符合条件的参数
 		Wrapper<Student> wrapper=new EntityWrapper<>();
-		wrapper.eq("name", param.getName());
+		//wrapper.eq("name", param.getName());
+		String dateStr="2018-12-10";
+		LocalDate paramDate = LocalDate.parse(dateStr,DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		paramDate.plusDays(1);//日期加一天
+		wrapper.between("createDate", paramDate.toString(), paramDate.plusDays(1).toString());//查这个日期范围内的数据
 		List<Student> stuList=mapper.selectList(wrapper);
-		
+
 		/**
 		 * List 转 map
 		 * 这里id作为key，实体Student作为value;a -> a返回自身对象；
@@ -400,5 +406,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 		
 		System.out.println();
 	}
+
 	
 }
