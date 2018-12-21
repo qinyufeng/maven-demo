@@ -3,12 +3,13 @@ package com.qyf.maven_demo.serviceImpl;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.qyf.maven_demo.mapper.CalculateMapper;
 import com.qyf.maven_demo.model.Calculate;
+import com.qyf.maven_demo.model.Student;
 import com.qyf.maven_demo.service.ICalculateService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -93,6 +94,7 @@ public class CalculateServiceImpl extends ServiceImpl<CalculateMapper,Calculate>
 			List<Calculate> list1=getDataList();
 			List<Calculate> list2=getDataList();
 			List<Calculate> listConcatLiat2=Stream.concat(list1.stream(), list2.stream()).collect(Collectors.toList());
+
 		}
 		/**Integer  类型的数据**/
 		private void calculateByStreamTest2() {
@@ -101,6 +103,9 @@ public class CalculateServiceImpl extends ServiceImpl<CalculateMapper,Calculate>
 			int sum1 = intList.stream().reduce(0, (x,y) -> x+y);
 			//或者
 			int sum2 = intList.stream().reduce(0, Integer::sum);
+			List<Calculate>  list=getDataList();
+			int intAsum=list.stream().mapToInt(Calculate::getId).sum();
+			double doubleAsum=list.stream().mapToDouble(Calculate::getDoubA).sum();
 			//最小值
 			Optional<Integer> minOpt=intList.stream().min((item1,item2) -> item1.compareTo(item2)) ;
 			int minValue=minOpt.get();
@@ -110,30 +115,57 @@ public class CalculateServiceImpl extends ServiceImpl<CalculateMapper,Calculate>
 			System.out.println(sum1+","+sum2+","+minValue+ "," +maxValue);//计算结果sum1=5,sum2=5,minValue=1,maxValue=3
 			
 		}
-		private List<Calculate> getDataList(){
+		private static List<Calculate> getDataList(){
 			List<Calculate> list=new ArrayList<>();
 			Calculate obj1=new Calculate();
-			obj1.setPrice(new BigDecimal(1));
-			obj1.setNums(new BigDecimal(2));
-			obj1.setCalNum(new BigDecimal(1));
+			obj1.setPrice(new BigDecimal(1));obj1.setNums(new BigDecimal(2));obj1.setCalNum(new BigDecimal(1));
+			obj1.setDoubA(1.1);
+			
 			obj1.setNO("1");
-			Calculate obj2=new Calculate();
-			obj2.setPrice(new BigDecimal(1));
-			obj2.setNums(new BigDecimal(2));
-			obj2.setCalNum(new BigDecimal(1));
+			Calculate obj2=new Calculate();obj2.setNums(new BigDecimal(2));obj2.setCalNum(new BigDecimal(1));
+			obj2.setDoubA(1.1);
 			obj2.setNO("1");
+			
 			Calculate obj3=new Calculate();
-			obj3.setPrice(new BigDecimal(1));
-			obj3.setNums(new BigDecimal(2));
-			obj3.setCalNum(new BigDecimal(2));
+			obj3.setPrice(new BigDecimal(1));obj3.setNums(new BigDecimal(2));obj3.setCalNum(new BigDecimal(2));
+			obj3.setDoubA(1.1);
 			obj3.setNO("2");
 			
 			list.add(obj1);list.add(obj2);list.add(obj3);
 			return list;
 		}
-		private static void test() {
+		private static List<Student> getDataListStu(){
+			List<Student> list=new ArrayList<>();
+			Student obj1=new Student();
+			obj1.setStuId("11");
+			obj1.setName("qyf");
+			obj1.setAge(22);
+			Student obj2=new Student();
+			obj2.setStuId("11");
+			obj2.setName("qin");
+			obj2.setAge(22);
+			Student obj3=new Student();
+			obj3.setStuId("33");
+			obj3.setName("yu");
+			obj3.setAge(22);
+			list.add(obj1);list.add(obj2);list.add(obj3);
+			return list;
 		}
+	/**
+	     * 它们的执行效率排序为 ：for > forEach > stream
+	     * 它们的代码编写量排序为：for < forEach < stream
+	*/
 		public static void main(String[] args) {
-			test();
+			List<Student> list1=getDataListStu();
+			//方式1：for循环
+			for(Student obj:list1) {//会改变源数据list1
+				obj.setStuClass("1");
+			}
+			//方式2：Java8的forEach
+			list1.forEach(obj -> {
+				obj.setStuClass("2");//会改变源数据list1
+			});
+			//方式2：java8的stream
+			
 		}
 }

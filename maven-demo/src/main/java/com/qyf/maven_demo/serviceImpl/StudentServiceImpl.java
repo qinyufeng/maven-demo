@@ -1,6 +1,7 @@
 package com.qyf.maven_demo.serviceImpl;
 
 import com.qyf.maven_demo.model.Student;
+import com.qyf.maven_demo.entity.Params;
 import com.qyf.maven_demo.mapper.StudentMapper;
 import com.qyf.maven_demo.service.StudentService;
 
@@ -91,8 +92,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 		 * List<Student> 转 List<String>
 		 */
 		List<String> stuid=stuList.stream().map(Student::getStuId).collect(Collectors.toList());
-		
-		/**
+		//筛选掉null和空值，不然数组list里面就会有null和空值""
+		List<String> stuid2 = stuList.stream().filter(item->item.getName() !=null).filter(item->!item.getName().equals(""))
+				.map(Student::getStuId).distinct().collect(Collectors.toList());
+		/**List<String> stuid2 = stuList.stream().filter(item->!item.getName().equals("")).filter(item->item.getName() !=null)
+				.map(Student::getStuId).distinct().collect(Collectors.toList());先筛选空值再筛选null会报null异常 **/	
+				/**
 		 *        分组 List<Student> 转 List<String,List<Student>
 		 */
 		Map<String, List<Student>> groupByStuid = stuList.stream().collect(Collectors.groupingBy(Student::getStuId));
@@ -392,20 +397,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      * 它们的代码编写量排序为：for < forEach < stream
 */
 	public static void main(String[] args) {
-		List<Student> list1=getDataList();
-		//方式1：for循环
-		for(Student obj:list1) {//会改变源数据list1
-			obj.setStuClass("1");
-		}
-		//方式2：Java8的forEach
-		list1.forEach(obj -> {
-			obj.setStuClass("2");//会改变源数据list1
-		});
-		//方式2：java8的stream
-		List<Student> list3=list1.stream().map(item -> item.setStuId("3")).collect(Collectors.toList());
-		
-		System.out.println();
 	}
+
+@Override
+public List<Student> mapperXmlTest(Params params) {
+	//查询
+	//List<Student> resultList=mapper.mapperXmlTest();
+	return null;
+}
 
 	
 }

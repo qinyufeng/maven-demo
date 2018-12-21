@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.qyf.maven_demo.model.Student;
 import com.qyf.maven_demo.service.ISequenceService;
 import com.qyf.maven_demo.service.StudentService;
 
@@ -33,8 +34,7 @@ public class CoreTask {
 	}
 	@Scheduled(cron="0 0/1 * * * ?")
 	private void test() throws Exception{
-		String test=iSequenceService.getSequence("xh", "yyyyMMdd", "wl", 2);
-		System.out.println(test);
+		stuService.javaEight(new Student());
 	}
 
 }

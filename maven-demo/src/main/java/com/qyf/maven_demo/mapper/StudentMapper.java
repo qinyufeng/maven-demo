@@ -26,4 +26,5 @@ public interface StudentMapper extends BaseMapper<Student> {
 	Integer deleteCommon(@Param("mapperMap") Map<String, Object> mapperMap);
 
 	Integer updateCommon(@Param("mapperMap") Map<String, Object> mapperMap);
+	List<Student> mapperXmlTest(@Param("name")String name,@Param("creatDate")String creatDate);
 }

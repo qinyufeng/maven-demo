@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.qyf.maven_demo.entity.Params;
 import com.qyf.maven_demo.entity.StudentValidate;
 import com.qyf.maven_demo.model.Student;
 import com.qyf.maven_demo.service.StudentService;
@@ -178,5 +179,11 @@ public class StudentController {
 	private Object cycle(){
 		service.cycle();
 		return null;
+	}
+	/************************ xml sql语句    *************************************/
+	@GetMapping("/mapperXmlTest")
+	private List<Student> mapperXmlTest(){
+		Params param=new Params();
+		return service.mapperXmlTest(param);
 	}
 }

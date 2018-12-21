@@ -191,4 +191,10 @@
 			</if>
 		</where>
 	</delete>
+	<select id="mapperXmlTest" resultType="com.qyf.maven_demo.model.Student">
+	select *
+	from Student
+	where 1=1
+	
+	</select>
 </mapper>
