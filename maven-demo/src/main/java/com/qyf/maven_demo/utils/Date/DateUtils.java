@@ -71,11 +71,13 @@ public final class DateUtils {
                         new SimpleDateFormat("G yyyy年MM月dd号 E a hh时mm分ss秒");
         String format1 = simpleDateFormat.format(new Date());
         System.out.println(format1);  //打印: 公元 2017年03月21号 星期二 下午 06时38分20秒
-      //使用jdk1.8 LocalDateTime和DateTimeFormatter
+     
+        //使用jdk1.8 LocalDateTime和DateTimeFormatter
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter pattern = 
                    DateTimeFormatter.ofPattern("G yyyy年MM月dd号 E a hh时mm分ss秒");
         String format2 = now.format(pattern);
+        
         System.out.println(format2); //打印: 公元 2017年03月21号 星期二 下午 06时38分20秒
         /******************** String 转  Date***********************/
         //使用Date和SimpleDateFormat
