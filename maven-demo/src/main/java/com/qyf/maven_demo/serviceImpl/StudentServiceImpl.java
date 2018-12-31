@@ -97,21 +97,35 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 				.map(Student::getStuId).distinct().collect(Collectors.toList());
 		/**List<String> stuid2 = stuList.stream().filter(item->!item.getName().equals("")).filter(item->item.getName() !=null)
 				.map(Student::getStuId).distinct().collect(Collectors.toList());先筛选空值再筛选null会报null异常 **/	
-				/**
+		
+		/**
 		 *        分组 List<Student> 转 List<String,List<Student>
 		 */
 		Map<String, List<Student>> groupByStuid = stuList.stream().collect(Collectors.groupingBy(Student::getStuId));
 		/**
-		 *  List<Student>根据某个属性排序
+		 *  List<Student>排序：根据某个属性排序
 		 */
 		 List<Student> stuidSort = stuList.stream().sorted(Comparator.comparing(Student::getStuId))
 	                .collect(Collectors.toList());//升序
 		 List<Student> stuidSortReversed = stuList.stream().sorted(Comparator.comparing(Student::getStuId).reversed())
 	                .collect(Collectors.toList());//降序
 		/**
-		 *  List<Student>排序
+		 * List<Student>排序：按多个属性排序
+		 * 效果：先按stuId升序，如果stuId相同再按name排序，也是升序
+		* compareToIgnoreCase() 方法用于按字典顺序比较两个字符串，不考虑大小写。语法：int compareToIgnoreCase(String str)
+		 *      如果参数字符串等于此字符串，则返回值 0；
+                         如果此字符串小于字符串参数，则返回一个小于 0 的值；
+                         如果此字符串大于字符串参数，则返回一个大于 0 的值。
 		 */
-		 
+		 //升序
+		 List<Student>  stuSorted2=stuList.stream().sorted((item1,item2)->
+			(item1.getStuId().compareToIgnoreCase(item2.getStuId()))==0?item1.getName().compareToIgnoreCase(item2.getName()):item1.getStuId().compareToIgnoreCase(item2.getStuId()))
+					.collect(Collectors.toList());
+		 //反序（降序）
+		 Comparator<Student> comparator=(item1,item2)->
+			(item1.getStuId().compareToIgnoreCase(item2.getStuId()))==0?item1.getName().compareToIgnoreCase(item2.getName()):item1.getStuId().compareToIgnoreCase(item2.getStuId());
+		stuSorted2.sort(comparator.reversed());
+		
 		System.out.println(listToMap1); System.out.println(listToMap2); System.out.println(listToMap3); System.out.println(commonClass);System.out.println(moneyTotal);System.out.println(ageTotal);
 		return null;
 	}

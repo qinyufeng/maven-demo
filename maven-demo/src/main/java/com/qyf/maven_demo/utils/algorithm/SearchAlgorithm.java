@@ -1,9 +1,8 @@
 package com.qyf.maven_demo.utils.algorithm;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 算法题目描述：
@@ -15,17 +14,58 @@ import java.util.Set;
 public class SearchAlgorithm {
 	public static void main(String[] args) {
 		//构造测试数据
-		Integer[] arr=[1000];
-		for(int i=1;i<1000;i++) {
-			arr[i]=i;
+		int[] arr= new int[4];
+		for(int i=0;i<4;i++) {
+			arr[i]=i+1;
 		}
-		arr.add(1);
-		//搜索1
-		Set<Integer> sets=new HashSet<>();
+		arr[1]=2;
+		/**搜索方式1**/
+		Long time1=System.currentTimeMillis();
+		Map<Integer,Integer> keys=new HashMap<>();
 		for(Integer i:arr) {
-			sets.add(i);
+			if(!keys.containsKey(i)) {
+				keys.put(i, i);
+			}else {
+				System.out.println("相同的数是："+i);
+			}
 		}
-		Integer[] setsArr=(Integer[]) sets.toArray();
+		Long time2=System.currentTimeMillis();
+		System.out.println("map key查找用时："+(time2-time1)+"毫秒");
+		/**二分搜索算法(此題不可用，結果不對）**/
+		binaryFindResult(arr);
+		//System.out.println(middleIndex);
+		
+	}
+	public static void binaryFindResult(int[] data){
+		Long time1=System.currentTimeMillis();
+		Arrays.sort(data);
+		for (int i = 0; i < data.length; i++) {
+		int target = data[i];
+		int result = binaryFind(data, target);
+		if (result != -1) {
+		//System.out.println("相同元素为："+data[result]);
+		Long time2=System.currentTimeMillis();
+		//System.out.println("二分查找用时："+(time2-time1)+"毫秒");
+		break;
+		 }
+		}
+	}
+	
+	public static int binaryFind(int[] data, int target) {
+		int start = 0;
+		int end = data.length - 1;
+		while (start <= end) {
+		int middleIndex = (start + end) / 2;
+		if (target == data[middleIndex]) {
+		return middleIndex;
+		}
+		if (target >= data[middleIndex]) {
+		start = middleIndex + 1;
+		} else {
+		end = middleIndex - 1;
+		}
+		}
+		return -1;
+		}
 	}
 
-}
