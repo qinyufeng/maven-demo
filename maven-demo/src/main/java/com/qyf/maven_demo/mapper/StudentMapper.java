@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 
 /**
  * <p>
@@ -27,4 +28,7 @@ public interface StudentMapper extends BaseMapper<Student> {
 
 	Integer updateCommon(@Param("mapperMap") Map<String, Object> mapperMap);
 	List<Student> mapperXmlTest(@Param("name")String name,@Param("creatDate")String creatDate);
+	List<Student> selectStuList(@Param("ew")Wrapper<Student> wrapper);
+	List<Student> selectStuListPage(RowBounds rowBounds,@Param("ew")Wrapper<Student> wrapper);
+	
 }

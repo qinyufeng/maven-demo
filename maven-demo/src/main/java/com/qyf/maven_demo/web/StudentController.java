@@ -21,8 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.lesso.model.PageParam;
 import com.qyf.maven_demo.entity.Params;
 import com.qyf.maven_demo.entity.StudentValidate;
+import com.qyf.maven_demo.model.Parameter;
+import com.qyf.maven_demo.model.Parameters;
 import com.qyf.maven_demo.model.Student;
 import com.qyf.maven_demo.service.StudentService;
 
@@ -95,8 +98,17 @@ public class StudentController {
 		List<Student> stuList=service.selectList(wrapper);
 		return stuList;
 	}
-	
-	
+	/**
+	 * 常用 查询(分页、不分页等）
+	 */
+	@GetMapping("/getlistTest/{data}")
+	private List<Student> selectListTest(@PathVariable String data){
+		Parameters params = JSON.parseObject(data, Parameters.class);
+		if(ObjectUtils.isEmpty(params))
+			params = Parameters.DEFAULT;
+		List<Student> stuList=service.selectListTest(params);
+		return stuList;
+	}
 	/************************ 参数校验 *************************************/
 	
 	/**
@@ -185,5 +197,10 @@ public class StudentController {
 	private List<Student> mapperXmlTest(){
 		Params param=new Params();
 		return service.mapperXmlTest(param);
+	}
+	/************************ test    *************************************/
+	@PostMapping("/test")   
+	private void test(){
+		service.test();
 	}
 }
