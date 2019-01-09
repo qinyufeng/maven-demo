@@ -28,7 +28,12 @@ spring:
          min-idle: 0 
       # 连接超时时间（毫秒)
      timeout: 500
-  
+  #rabbitmq的连接配置   
+  rabbitmq:
+     host: 127.0.0.1
+     port: 5672
+     username: guest
+     password: guest  
 server:
      port: 8081
      tomcat:
