@@ -1,10 +1,34 @@
-# mysql 的数据库配置
+
 spring:
+  # mysql 的数据库配置
   datasource:
     url: jdbc:mysql://localhost:3306/maven_demo?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+  #redis的连接配置
+  redis:
+      # Redis数据库索引（默认为0）    
+     database: 0
+      # Redis服务器地址
+     host: localhost
+      # Redis服务器连接端口
+     port: 6379 
+      # Redis服务器连接密码（默认为空）
+     password: 
+     jedis: 
+       pool: 
+          # 连接池最大连接数（使用负值表示没有限制）
+         max-active: 8 
+          # 连接池最大阻塞等待时间（使用负值表示没有限制）
+         max-wait: -1 
+          # 连接池中的最大空闲连接
+         max-idle: 8 
+          # 连接池中的最小空闲连接
+         min-idle: 0 
+      # 连接超时时间（毫秒)
+     timeout: 500
+  
 server:
      port: 8081
      tomcat:
