@@ -90,5 +90,11 @@
 			<artifactId>spring-boot-starter-amqp</artifactId>
 			<version>2.0.4.RELEASE</version>
 		</dependency>
+		<!-- 添加poi依赖包 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>4.0.1</version>
+		</dependency>
 	</dependencies>
 </project>
