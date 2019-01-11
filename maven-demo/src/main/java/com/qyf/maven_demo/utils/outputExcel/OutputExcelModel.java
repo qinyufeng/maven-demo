@@ -10,10 +10,9 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.util.ObjectUtils;
 
 public class OutputExcelModel {
-	String fileName="";
-	String fileType="";
 	OutputStream os;
 	
 	private Integer irow = -1; // 记录行
@@ -59,17 +58,29 @@ public class OutputExcelModel {
 	}
 	/**
 	 * 导出excel到指定路径
+	 * @param url 文件保存的路径和文件名
+	 * @param fileType文件类型
 	 */
-	public void loadExcel() {
-        try {  
-           os = new FileOutputStream("E:\\qyf\\b.xls");
-            wb.write(os);
-            os.close();
-            
-            System.out.println("Excel文件生成成功...");  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-            System.out.println("Excel文件生成失败：."+ e.getMessage());  
-        }
+	public void loadExcel(String url,String fileType) throws IOException{
+    	if(ObjectUtils.isEmpty(fileType)) {
+    		fileType=".xls";
+    	}else if(fileType.equals(".xls")) {
+    		fileType=".xls";
+    	}else if(fileType.equals(".xlsx")) {
+    		fileType=".xlsx";
+    	}else if(fileType.equals(".et")) {
+    		fileType=".et";
+    	}else if(fileType.equals(".csv")) {
+    		fileType=".csv";
+    	}else {
+    		fileType=".xls";
+    	}
+    	
+       os = new FileOutputStream(url+fileType);
+        wb.write(os);
+        os.close();
+        
+        System.out.println("Excel文件生成成功..."); 
+
 	}
 }

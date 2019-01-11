@@ -17,17 +17,12 @@ public class OutputExcel {
 	public static void main(String[] args) {
 		OutputExcelModel excelModel=new OutputExcelModel();
 		//前端参数
-		String[] excelTitle = {"计量标准号","物料号","物料描述","计量标准描述","工序"};//excel表头列名
-		Map<String,Integer> countSort=new HashMap<>();//字段的列顺序
-		countSort.put("key1", 1);
-		countSort.put("key2", 2);
-		countSort.put("key3", 3);
-		countSort.put("key4", 4);
-		countSort.put("key5", 0);
+		String[] excelTitle=getExcelTitle();
+		 Map<String,Integer> columnSort=getColumnSort();
 		excelModel.setExcelTitle(excelTitle);
 		
 		List<Map<String,Object>> list=getTestData();
-		Set<Entry<String, Integer>> entrySet=countSort.entrySet();
+		Set<Entry<String, Integer>> entrySet=columnSort.entrySet();
 		List<String> keys = new ArrayList<>();
 		for(Entry<String,Integer> entry:entrySet) {
 			keys.add(entry.getKey());
@@ -37,14 +32,36 @@ public class OutputExcel {
 			String[] rowData = new String[excelTitle.length];
 			
 			for(String key:keys) {
-				rowData[countSort.get(key)] = map.get(key).toString();
+				rowData[columnSort.get(key)] = map.get(key).toString();
 			}
 			excelModel.addRow(rowData);
 		}
-		excelModel.loadExcel();
+		//支持.xls  .xlsx  .et   .csv 格式
+		try {
+			excelModel.loadExcel("E:\\qyf\\b5",".xlsx");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
+	
+	
+	
+	private static String[] getExcelTitle() {
+		String[] excelTitle = {"计量标准号","物料号","物料描述","计量标准描述","工序"};//excel表头列名
+		return excelTitle;
+	}
+	private static Map<String,Integer> getColumnSort(){
+		Map<String,Integer> columnSort=new HashMap<>();//字段的列顺序
+		columnSort.put("key1", 1);
+		columnSort.put("key2", 2);
+		columnSort.put("key3", 3);
+		columnSort.put("key4", 4);
+		columnSort.put("key5", 0);
+		return columnSort;
+	}
 	private static List<Map<String,Object>> getTestData(){
 		
 		List<Map<String,Object>> list=new ArrayList<>();
